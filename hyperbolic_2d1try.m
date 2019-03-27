@@ -1,5 +1,5 @@
 clear all;
-close all;
+%close all;
 
 % Define a "spatial" grid
 M = 100;
@@ -16,10 +16,9 @@ dx = D / M;
 chi = sin(pi*X).*sin(pi*Y);
 
 % Define information about the step sizes in the "time" dimension
-% Not sure about those values
-T = 10;
-dt = dx; %Is this ok?
-N = floor(T * (1.0 + 1.0e-10) / dt);
+N = 100;
+T = 100;
+dt = 0.1;
 
 % The initial condition
 %Pxy as function?
@@ -40,7 +39,7 @@ for n = 1:N - 1
     psi_nm1 = psi_n;
     psi_n = psi_np1;
     contourf(psi_n)
-    drawnow()
+    drawnow
 end
 
 % For two-dimensional plotting you may wish to use contourf or pcolor

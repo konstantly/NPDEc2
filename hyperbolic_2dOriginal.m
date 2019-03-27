@@ -1,26 +1,8 @@
-%% a
-%[a, b, c] = Pxy(1,2,@Jxp)
-
-x = [1, 2, 3];
-y = [1, 2, 2];
-
-[X, Y] = meshgrid(x, y);
-X = X';
-Y = Y';
-yinit = sin(pi*X).*sin(pi*Y)
-
-chi = sin(pi*X).*sin(pi*Y)
-
-
-
-%% b
-
 clear all;
 close all;
-%%
 
 % Define a "spatial" grid
-M = 10;
+M = 
 D = 1;
 x = linspace(0, D, M + 1);
 y = linspace(0, D, M + 1);
@@ -31,21 +13,26 @@ Y = Y';
 % Y(m, p) = y_{p - 1} for all m
 dx = D / M;
 
-chi = sin(pi*X).*sin(pi*Y);
+chi = 
 
 % Define information about the step sizes in the "time" dimension
-N = 100;
-T = 100;
-dt = 0.1;
+N = 
+T = 
+dt = 
 
 % The initial condition
-psi_nm1 = exp(-((x-0.25).^2+(y-0.6).^2)/0.08).*chi;
+psi_nm1 = 
 
+% First "timestep"
+psi_h =
+psi_n =
 
+% Remaining "timesteps"
+for n = 1:N - 1
+  psi_np1 =
+  
+  psi_nm1 = psi_n;
+  psi_n = psi_np1;
+end
 
-
-
-
-
-
-
+% For two-dimensional plotting you may wish to use contourf or pcolor
