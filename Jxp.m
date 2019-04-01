@@ -1,3 +1,9 @@
-function result = Jxp(x, y)
-result = x-y;
+function result = Jxp(chi, psi, dx)
+% A function defining J_n,m,p for the Jx+ version. It takes as input
+% the matrix chi, our estimation of psi and the dx.
+    result = zeros(size(psi)); 
+    result(2:end-1,2:end-1) = (chi(3:end,3:end).*(psi(2:end-1,3:end)-psi(3:end,2:end-1))-...
+        chi(1:end-2,1:end-2).*(psi(1:end-2,2:end-1)-psi(2:end-1,1:end-2))-...
+        chi(1:end-2,3:end).*(psi(2:end-1,3:end)-psi(1:end-2,2:end-1))+...
+        chi(3:end,1:end-2).*(psi(3:end,2:end-1)-psi(2:end-1,1:end-2)))/(4*dx.*dx);
 end
