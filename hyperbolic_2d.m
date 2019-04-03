@@ -1,5 +1,5 @@
 clear all;
-close all;
+%close all;
 
 % Define a "spatial" grid
 M = 100;
@@ -18,7 +18,7 @@ chi = sin(pi*X).*sin(pi*Y);
 % Define information about the step sizes in the "time" dimension
 % Not sure about those values
 T = 10;
-c = 2;
+c = 5;
 dt = dx/c; %Is this ok?
 N = floor(T * (1.0 + 1.0e-10) / dt)
 
@@ -46,6 +46,9 @@ psi_n = psi_nm1 - dt.*Jpx(chi, psi_h, dx);
 
 %Do we need this?
 psi_np1 = zeros(size(psi_n));
+t = zeros(1,N-1);
+sumPsi = zeros(1,N-1);
+sumSqPsi = zeros(1,N-1);
 
 % We make the plots better looking
 set(0, 'DefaultLineLineWidth', 1.2);
@@ -79,16 +82,27 @@ for n = 1:N - 1
     xlabel('$x$ grid', format_str{:});
     ylabel('$y$ grid', format_str{:});
     drawnow()
+    
+    if mod(n, 500) == 0
+        disp(n);
+    end
 end
 %%
 % Make them with latex
 figure(2)
+%title('asd')
+subplot(1,2,1)
 plot(t, sumPsi)
-hold on
+subplot(1,2,2)
 plot(t, sumSqPsi)
-title('Error of $\Psi$', format_str{:});
-legend('sum of \Psi', 'sum of Squares of \Psi')
-xlabel('$n\Delta t$', format_str{:});
-ylabel('sum of $\Psi$ times $\Delta x$', format_str{:});
-hold off
+%title('Error of $\Psi$', format_str{:});
+%legend('sum of \Psi', 'sum of Squares of \Psi')
+%xlabel('$n\Delta t$', format_str{:});
+%ylabel('sum of $\Psi$ times $\Delta x$', format_str{:});
+%suptitle('I am a super title')
+%ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0  1],...
+%    'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
+%text(0.5, 0.98,'Title', format_str{:});
+sgtitle('asd', format_str{:});
+
 % For two-dimensional plotting you may wish to use contourf or pcolor
