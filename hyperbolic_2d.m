@@ -1,5 +1,9 @@
+%% NuPDEs 
+% C2 assignment script made by Konstantinos Brazitikos s1896182
+% 5/4/2019
+
 clear all;
-%close all;
+close all;
 
 % Define a "spatial" grid
 M = 100;
@@ -17,13 +21,12 @@ chi = sin(pi*X).*sin(pi*Y);
 
 % Define information about the step sizes in the "time" dimension
 % Not sure about those values
-T = 10;
-c = 5;
+T = 10; % Can be tried for T=50,100 etc if we comment out the 'drawnow'.
+c = 10;
 dt = dx/c; %Is this ok?
-N = floor(T * (1.0 + 1.0e-10) / dt)
+N = floor(T * (1.0 + 1.0e-10) / dt);
 
 % The initial condition
-%Pxy as function?
 psi_nm1 = exp(-((x-0.25).^2+(y-0.6).^2)/0.08).*chi;
 
 % First "timestep"
@@ -32,6 +35,7 @@ psi_nm1 = exp(-((x-0.25).^2+(y-0.6).^2)/0.08).*chi;
 % We use the variant of Jnmp that we want each time
 % by commenting in and out the corresponding lines here
 % and in the calculation of the next step.
+
 % J++
 % psi_h = psi_nm1 - (dt/2)*Jpp(chi, psi_nm1, dx);
 % psi_n = psi_nm1 - dt.*Jpp(chi, psi_h, dx);
@@ -44,7 +48,7 @@ psi_n = psi_nm1 - dt.*Jpx(chi, psi_h, dx);
 % psi_h = psi_nm1 - (dt/2)*Jxp(chi, psi_nm1, dx);
 % psi_n = psi_nm1 - dt.*Jxp(chi, psi_h, dx);
 
-%Do we need this?
+% Initialise our vectors to 0
 psi_np1 = zeros(size(psi_n));
 t = zeros(1,N-1);
 sumPsi = zeros(1,N-1);
@@ -75,34 +79,44 @@ for n = 1:N - 1
     t(n) = n*dt;
     sumPsi(n) = dx^2*sum(sum(psi_n));
     sumSqPsi(n) = dx^2*sum(sum(psi_n.*psi_n));
-    
-%    pcolor(psi_n)
-    contourf(psi_n)
-    title('Density of $\Psi$', format_str{:});
-    xlabel('$x$ grid', format_str{:});
-    ylabel('$y$ grid', format_str{:});
-    drawnow()
+
+% Comment in/out to make the function perform smoother/faster.
+%     contourf(psi_n) % We can use how to plot
+%     surf(psi_n)
+%     title('Density of $\Psi$', format_str{:});
+%     xlabel('$x$ grid', format_str{:});
+%     ylabel('$y$ grid', format_str{:});
+%     zlabel('$\psi$', format_str{:});
+%     drawnow()
+% Comment in/out to make the function perform smoother/faster.
     
     if mod(n, 500) == 0
-        disp(n);
+        contourf(psi_n)
+        title('Density of $\Psi$', format_str{:});
+        xlabel('$x$ grid', format_str{:});
+        ylabel('$y$ grid', format_str{:});
+        zlabel('$\psi$', format_str{:});
+        drawnow()
     end
 end
 %%
-% Make them with latex
+% We plot the sums for the second question for only one J.
 figure(2)
-%title('asd')
 subplot(1,2,1)
 plot(t, sumPsi)
+xlabel('Time $n\Delta t$', format_str{:});
+ylabel('Norm of $\Psi$', format_str{:});
+
 subplot(1,2,2)
 plot(t, sumSqPsi)
-%title('Error of $\Psi$', format_str{:});
-%legend('sum of \Psi', 'sum of Squares of \Psi')
-%xlabel('$n\Delta t$', format_str{:});
-%ylabel('sum of $\Psi$ times $\Delta x$', format_str{:});
-%suptitle('I am a super title')
-%ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0  1],...
-%    'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
-%text(0.5, 0.98,'Title', format_str{:});
-sgtitle('asd', format_str{:});
+xlabel('Time $n\Delta t$', format_str{:});
+ylabel('Norm of $\Psi^2$', format_str{:});
+%suptitle('Norms against Time', format_str{:});
+ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0  1],...
+    'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
+text(0.5, 0.98,'Norms against Time', format_str{:});
+% Sgtitle only works for R2018b version of Matlab so, if you have an
+% earlier version, you must use the workaround
+%sgtitle('Norms against Time', format_str{:}); 
 
 % For two-dimensional plotting you may wish to use contourf or pcolor
