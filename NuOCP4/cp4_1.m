@@ -1,11 +1,27 @@
-clear;close all;
-set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
+%% NuODE 
+% CP4
+% Konstantinos Brazitikos s1896182
+% P1a 
+
+%clear;
+%close all;
+%set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
 KeplerInit;
 h = 0.001;
-%h=0.1;
 
-N=10/h;
+totalT = 10;
+N = floor(totalT/h);
 [T,Q,P,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+
+% Plot for h = 0.001
+plot([0,0], [0,0],'ko')
+axis([-0.4 1.2 -0.8 0.8])
+hold on
+plot(Q(1,:),Q(2,:))
+hold off
+% h = 0.16; 
+
+
 plot(Q(1,:),Q(2,:),'k^')
 hold on 
 h = 0.01;
@@ -23,8 +39,8 @@ title('the solution of Kepler with different stepsize')
 plot(0,0,'*');
 h=legend('h = 0.001','h=0.01','h=0.1','fixedpoint');
 set(h,'Fontsize',10);
-xlim([-1,1.5]);
-ylim([-1.5,1]);
+% xlim([-1,1.5]);
+% ylim([-1.5,1]);
 xlabel('x')
 ylabel('y')
 hold off
