@@ -1,83 +1,131 @@
 %% NuODE 
 % CP4
 % Konstantinos Brazitikos s1896182
-% P1a 
+% P 1a 
 
-%clear;
-%close all;
-%set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
+clear;
+close all;
+
+% We make the plots better looking
+set(0, 'DefaultLineLineWidth', 2);
+set(0, 'DefaultAxesFontSize',20);
+fig = gcf; fig.PaperPositionMode = 'auto';
+fig_pos = fig.PaperPosition;fig.PaperSize = [fig_pos(3) fig_pos(4)];
+print('-bestfit','BestFitFigure','-dpdf')
+
+%% delete one %
+clf % Delete
+format_str = {'interpreter', 'latex','FontSize',30};
 KeplerInit;
-h = 0.001;
+h1 = 0.001;
 
 totalT = 10;
-N = floor(totalT/h);
-[T,Q,P,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+N = floor(totalT/h1);
+[~,Q,~,~]= HamSolver(q0,p0,N,h1,@KeplerForce,'Verlet',Pars);
 
 % Plot for h = 0.001
-plot([0,0], [0,0],'ko')
-axis([-0.4 1.2 -0.8 0.8])
+p0 = plot(0, 0,'bo');
+title('Kepler problem with different stepsizes', format_str{:});
+xlabel('$x$ position', format_str{:});
+ylabel('$y$ position', format_str{:});
+axis([-1 2.5 -3.5 1])
 hold on
-plot(Q(1,:),Q(2,:))
-hold off
-% h = 0.16; 
+comet(Q(1,:),Q(2,:), 0.3)
+legend('Origin','Location', 'SW', format_str{:});
+hold on
+p1 = plot(Q(1,:),Q(2,:),'r', 'DisplayName', ['$h =$ ', num2str( h1)]);
 
-
-plot(Q(1,:),Q(2,:),'k^')
-hold on 
-h = 0.01;
+% Next stepsize  h=0.05
+h2 = 0.05; 
 KeplerInit;
-N=10/h;
-[T,Q,P,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
-plot(Q(1,:),Q(2,:),'go')
+N = floor(totalT/h2);
+[~,Q,~,~]= HamSolver(q0,p0,N,h2,@KeplerForce,'Verlet',Pars);
+hold on
+p2 = plot(Q(1,:),Q(2,:),'m:', 'DisplayName', ['$h =$ ', num2str( h2)]);
 
+% Next stepsize h = 0.15
+h3 = 0.15; 
 KeplerInit;
-h=0.1;
-N=10/h;
-[T,Q,P,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
-plot(Q(1,:),Q(2,:),'r-')
-title('the solution of Kepler with different stepsize')
-plot(0,0,'*');
-h=legend('h = 0.001','h=0.01','h=0.1','fixedpoint');
-set(h,'Fontsize',10);
-% xlim([-1,1.5]);
-% ylim([-1.5,1]);
-xlabel('x')
-ylabel('y')
+N = floor(totalT/h3);
+[~,Q,~,~]= HamSolver(q0,p0,N,h3,@KeplerForce,'Verlet',Pars);
+hold on
+p3 = plot(Q(1,:),Q(2,:),'c--o', 'DisplayName', ['$h =$ ', num2str( h3)]);
+
+% Next stepsize h = 0.2
+h4 = 0.2;
+KeplerInit;
+N = floor(totalT/h4);
+[~,Q,~,~]= HamSolver(q0,p0,N,h4,@KeplerForce,'Verlet',Pars);
+hold on
+p4 = plot(Q(1,:),Q(2,:),'g--v', 'DisplayName', ['$h =$ ', num2str( h4)]);
+%legend([p1 p2 p3 p4 ],{['$h =$ ', num2str( h1)],['$h =$ ' num2str(h2)],...
+%    ['$h =$ ' num2str(h3)],['$h =$ ' num2str(h4)]},'Location', 'SW', format_str{:});
 hold off
-%% p1b
-clear;close all;
-set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
+% DELETE
+% hold on 
+% h = 0.01;
+% KeplerInit;
+% N = floor(totalT/h);
+% [~,Q,~,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+% plot(Q(1,:),Q(2,:),'go')
+% 
+% KeplerInit;
+% h=0.1;
+% N = floor(totalT/h);
+% [~,Q,~,H1]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+% plot(Q(1,:),Q(2,:),'r-')
+% plot(0,0,'*');
+% %set(h,'Fontsize',10);
+% % xlim([-1,1.5]);
+% % ylim([-1.5,1]);
+% hold off
+
+%% P 1b
+clear;clf;
+%%
+% We make the plots better looking
+set(0, 'DefaultLineLineWidth', 2);
+set(0, 'DefaultAxesFontSize',20);
+fig = gcf; fig.PaperPositionMode = 'auto';
+fig_pos = fig.PaperPosition;fig.PaperSize = [fig_pos(3) fig_pos(4)];
+%print('-bestfit','BestFitFigure','-dpdf')
+format_str = {'interpreter', 'latex','FontSize',30};
+
 KeplerInit;
 h=0.001;
-N=10/h;
-[T,Q,P,H4]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+totalT = 10;
+N = floor(totalT/h);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'r-')
 hold on
 p0=[0.6;0.3];
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'k-')
 p0=[0.6;0.1];
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'g-')
 plot(0,0,'b*')
-legend('\alpha = 0.6','\alpha = 0.3','\alpha = 0.1','fixed point')
-xlabel('x')
-ylabel('y')
-title('the solution of different \alpha with h=0.001')
+legend('$\alpha = 0.6$','$\alpha = 0.3$','$\alpha = 0.1$','Fixed point',...
+    format_str{:});
+xlabel('$x$ position', format_str{:});
+ylabel('$y$ position', format_str{:});
+title('Kepler problem for different $\alpha$ with $h=0.001$',...
+    format_str{:});
 %% p2b smaller stepsize h = 0.0001
 clear;close all;
 set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
 KeplerInit;
 h=0.0001;
-N=10/h;
-[T,Q,P,H4]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+totalT = 10;
+N = floor(totalT/h);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'r-')
 hold on
 p0=[0.6;0.3];
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'k-')
 p0=[0.6;0.1];
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'g-')
 plot(0,0,'b*')
 h=legend('\alpha = 0.6','\alpha = 0.3','\alpha = 0.1','fixed point')
@@ -90,12 +138,13 @@ clear;close all;
 set(0,'DefaultLineLineWidth',2); set(0,'DefaultAxesFontSize',20);
 KeplerInit;
 h=0.001;
-N=10/h;
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
+totalT = 10;
+N = floor(totalT/h);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@KeplerForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'k^')
 hold on
 TFCInit;
-[T,Q,P,H]= HamSolver(q0,p0,N,h,@TFCForce,'Verlet',Pars);
+[~,Q,~,~]= HamSolver(q0,p0,N,h,@TFCForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'r-')
 plot(0,0,'b*')
 g=legend('KeplerForce','TFCForce','fixed point')
@@ -105,20 +154,21 @@ ylabel('y')
 title('the solution of FTC and Kepler')
 
 %% 2c
-clear;close all;clc;
+clear;clf;clc;
 axis([-1.5,1.5,-1.5,1.5]);
 ax = gca; % current axes
 ax.FontSize = 8;
 TFCInit;
 h = 0.001;
 %h=0.0001;
-N=10/h;
-[T,Q,P,H_c1]= HamSolver(q0,p0,10000,0.001,@TFCForce,'Verlet',Pars);
+totalT = 10;
+N = floor(totalT/h);
+[~,Q,~,H_c1]= HamSolver(q0,p0,10000,0.001,@TFCForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'k-')
 hold on 
 %h=0.00001;
-%N=10/h;
-[T,Q,P,H_c2]= HamSolver(q0,p0,100000,0.0001,@TFCForce,'Verlet',Pars);
+%N = floor(totalT/h);
+[~,Q,~,H_c2]= HamSolver(q0,p0,100000,0.0001,@TFCForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'r-')
 legend('h= 0.001','h=0.0001')
 xlabel('x')
@@ -128,17 +178,19 @@ hold off
 
 
 %%
-clear;close all;clc;
+clear;clf;clc;
 ax = gca; % current axes
 ax.FontSize = 8;
 TFCInit;
 h=0.0001;
-N=20/h;
+totalT = 20;
+totalT = 10;
+N = floor(totalT/h);
 [T_verlet,Q,P,H_verlet]= HamSolver(q0,p0,N,h,@TFCForce,'Verlet',Pars);
 plot(Q(1,:),Q(2,:),'k-','LineWidth',2)
 hold on
 h=0.0004;
-N=20/h;
+N = floor(totalT/h);
 [T_rk4,Q,P,H_rk4]= HamSolver(q0,p0,N,h,@TFCForce,'RK4',Pars);
 axis([-1.5,1.5,-1.5,1.5]);
 plot(Q(1,:),Q(2,:),'r-','LineWidth',2)
